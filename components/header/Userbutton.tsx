@@ -1,30 +1,19 @@
 import React from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import UserAvatar from "../UserAvatar";
+import { Button } from "../ui/button";
+import Link from "next/link";
+import { UserButton } from "@clerk/nextjs";
 
-function Userbutton() {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <UserAvatar name="Walid Ait" image="https://github.com/shadcn.png"/>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent>
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Profile</DropdownMenuItem>
-        <DropdownMenuItem>Billing</DropdownMenuItem>
-        <DropdownMenuItem>Team</DropdownMenuItem>
-        <DropdownMenuItem>Subscription</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+function Userbutton({ user }: { user: any | null }) {
+  // subscription listener
+  if (!user) {
+    return (
+      <Link href={"/sign-in"}>
+        <Button variant={"outline"}> Sign in </Button>
+      </Link>
+    );
+  }
+
+  return <UserButton afterSignOutUrl="/" />;
 }
 
 export default Userbutton;
