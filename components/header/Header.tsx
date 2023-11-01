@@ -7,6 +7,8 @@ import { authOptions } from "@/auth";
 import Link from "next/link";
 import {MessagesSquareIcon} from "lucide-react";
 import { auth, currentUser } from "@clerk/nextjs";
+import CreateChatButton from "./CreateChatButton";
+import ProBanner from "./ProBanner";
 
 async function Header() {
 
@@ -28,6 +30,8 @@ async function Header() {
               <Link href={"/chat"} prefetch={false}>
                 <MessagesSquareIcon/>
               </Link>
+
+              <CreateChatButton/>
             </>
           ) : (
             <>
@@ -42,7 +46,7 @@ async function Header() {
         </div>
       </nav>
 
-      {/* {pro banner} */}
+      {/* <ProBanner/> */}
     </header>
   );
 }
