@@ -3,8 +3,14 @@ import Image from "next/image";
 import Link from "next/link";
 import demo from "@logos/demo.gif";
 import GlowingBlob from "@/components/GlowingBlob";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 
-export default function Home() {
+export default async function Home() {
+
+  const session = await getServerSession(authOptions);
+
+  console.log(session)
   return (
     <main className="">
       <div className="relative isolate pt-14 dark:bg-gray-900">
