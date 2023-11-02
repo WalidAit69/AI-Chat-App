@@ -1,18 +1,19 @@
+"use server"
+
 import React from "react";
 import Logo from "./Logo";
 import DarkModeToggle from "./DarkModeToggle";
 import Userbutton from "./Userbutton";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth";
 import Link from "next/link";
 import {MessagesSquareIcon} from "lucide-react";
-import { auth, currentUser } from "@clerk/nextjs";
 import CreateChatButton from "./CreateChatButton";
 import ProBanner from "./ProBanner";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 
 async function Header() {
 
-  const user = await currentUser()
+  const session = await getServerSession(authOptions)
 
   return (
     <header className="sticky top-0 z-50 bg-white dark:bg-gray-900">
@@ -25,7 +26,7 @@ async function Header() {
         <div className="flex flex-1 items-center justify-end space-x-4">
           {/* {LanguageSelect &&} */}
 
-          {user ? (
+          {session ? (
             <>
               <Link href={"/chat"} prefetch={false}>
                 <MessagesSquareIcon/>
@@ -42,7 +43,7 @@ async function Header() {
           )}
 
           <DarkModeToggle />
-          <Userbutton user={user}/>
+          <Userbutton session={session}/>
         </div>
       </nav>
 

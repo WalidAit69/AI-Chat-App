@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header/Header";
 import { ThemeProvider } from "@/components/header/ThemeProvider";
-import { ClerkProvider } from '@clerk/nextjs'
+import ClientProvider from "@/components/ClientProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClientProvider>
       <html lang="en">
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -28,6 +28,6 @@ export default function RootLayout({
           </ThemeProvider>
         </body>
       </html>
-    </ClerkProvider>
+    </ClientProvider>
   );
 }
