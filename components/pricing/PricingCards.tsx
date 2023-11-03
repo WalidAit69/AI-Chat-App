@@ -1,9 +1,14 @@
+"use client";
+
 import { CheckIcon } from "lucide-react";
 import Link from "next/link";
 import CheckoutButton from "./CheckoutButton";
 import { Button } from "../ui/button";
+import { useSession } from "next-auth/react";
 
 function PricingCards({ redirect }: { redirect: boolean }) {
+  const { data: session } = useSession();
+
   return (
     <div>
       <div className="mx-auto grid max-w-md grid-cols-1 gap-8 lg:max-w-4xl lg:grid-cols-2">
@@ -57,11 +62,25 @@ function PricingCards({ redirect }: { redirect: boolean }) {
             </div>
 
             {redirect ? (
-                <Link href={'/register'} className="mt-10">
-                    <Button variant={"secondary"} className="w-full bg-black text-white">Get Started Today</Button>
-                </Link>
-            ): (
-                tier.id && <CheckoutButton/>
+              <Link href={"/register"} className="mt-10">
+                {tier.id ? (
+                  <Button
+                    variant={"default"}
+                    className="w-full bg-black text-white"
+                  >
+                    Go Pro
+                  </Button>
+                ) : (
+                  <Button
+                    variant={"default"}
+                    className="w-full bg-black text-white"
+                  >
+                    Get Started Today
+                  </Button>
+                )}
+              </Link>
+            ) : (
+              tier.id && <CheckoutButton />
             )}
           </div>
         ))}
@@ -86,7 +105,7 @@ const tiers = [
   },
   {
     name: "Pro",
-    id: "si_pgkegkepgkeg",
+    id: "pro",
     priceMonthly: "19.99$",
     description: "Unlock the full Potential with Pro!",
     features: [
