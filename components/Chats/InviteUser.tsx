@@ -64,11 +64,11 @@ function InviteUser({ chatId }: { chatId: string }) {
       description: "Please wait while we send the invite...",
     });
 
-    const UsersInChat = (await getDocs(chatMembersRef(chatId))).docs.map((doc) => doc.data());
+    const UsersInChat = (await getDocs(chatMembersRef(chatId))).docs.map(
+      (doc) => doc.data()
+    );
 
     const isPro = subscription?.status === "active";
-
-    console.log(UsersInChat);
 
     if (!isPro && UsersInChat.length >= 2) {
       toast({
@@ -99,7 +99,6 @@ function InviteUser({ chatId }: { chatId: string }) {
         description: "Please enter a valid email address",
         variant: "destructive",
       });
-
       return;
     } else if (user.id === session.user.id) {
       toast({
@@ -107,9 +106,32 @@ function InviteUser({ chatId }: { chatId: string }) {
         description: "Please invite a new user",
         variant: "destructive",
       });
-
       return;
     } else {
+      let userFound = false;
+
+      UsersInChat.forEach((users) => {
+        if (user.id === users.userId) {
+          toast({
+            title: "User not found",
+            description: "Please enter a valid email address",
+            variant: "destructive",
+          });
+          userFound = true;
+          return;
+        }
+      });
+
+      if (userFound) {
+        toast({
+          title: "User Already in chat",
+          description: "Please invite a new user",
+          variant: "destructive",
+        });
+
+        return;
+      }
+
       await setDoc(addChatRef(chatId, user.id), {
         userId: user.id!,
         email: user.email!,
