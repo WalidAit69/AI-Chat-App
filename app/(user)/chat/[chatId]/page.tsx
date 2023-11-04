@@ -1,6 +1,7 @@
 import { authOptions } from '@/auth'
 import ChatInput from '@/components/Chats/ChatInput';
 import ChatMessages from '@/components/Chats/ChatMessages';
+import Chatmemberbadge from '@/components/Chats/Chatmemberbadge';
 import { sortedMessagesRef } from '@/lib/converters/Message';
 import { getDocs } from 'firebase/firestore';
 import { getServerSession } from 'next-auth'
@@ -22,9 +23,8 @@ async function ChatPage({params : {chatId}} : Props) {
     <div className=''>
         {/* {admin controls} */}
 
-        {/* {Chatmember badge} */}
+        <Chatmemberbadge chatId={chatId}/>
 
-        {/* {chatMessages} */}
         <div className='flex-1'>
           <ChatMessages
           chatId={chatId}
