@@ -12,10 +12,8 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +32,7 @@ import { addChatRef, chatMembersRef } from "@/lib/converters/ChatMembers";
 import { ToastAction } from "../ui/toast";
 import { getUserByEmailRef } from "@/lib/converters/User";
 import ShareLink from "./ShareLink";
+import LoadingSpinner from "../LoadingSpinner";
 
 const formSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
@@ -46,6 +45,7 @@ function InviteUser({ chatId }: { chatId: string }) {
   const subscription = useSubscriptionStore((state) => state.subscription);
   const router = useRouter();
 
+  const [loading, setloading] = useState(false);
   const [open, setOpen] = useState(false);
   const [openInviteLink, setopenInviteLink] = useState(false);
 
@@ -57,6 +57,8 @@ function InviteUser({ chatId }: { chatId: string }) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setloading(true);
+
     if (!session?.user.id) return;
 
     toast({
@@ -93,77 +95,84 @@ function InviteUser({ chatId }: { chatId: string }) {
 
     const user = querySnapshot?.docs[0]?.data();
 
-    if (querySnapshot.empty) {
-      toast({
-        title: "User not found",
-        description: "Please enter a valid email address",
-        variant: "destructive",
-      });
-      return;
-    } else if (user.id === session.user.id) {
-      toast({
-        title: "User Already in chat",
-        description: "Please invite a new user",
-        variant: "destructive",
-      });
-      return;
-    } else {
-      let userFound = false;
-
-      UsersInChat.forEach((users) => {
-        if (user.id === users.userId) {
-          toast({
-            title: "User not found",
-            description: "Please enter a valid email address",
-            variant: "destructive",
-          });
-          userFound = true;
-          return;
-        }
-      });
-
-      if (userFound) {
+    try {
+      setloading(true);
+      if (querySnapshot.empty) {
+        toast({
+          title: "User not found",
+          description: "Please enter a valid email address",
+          variant: "destructive",
+        });
+        return;
+      } else if (user.id === session.user.id) {
         toast({
           title: "User Already in chat",
           description: "Please invite a new user",
           variant: "destructive",
         });
-
         return;
-      }
+      } else {
+        let userFound = false;
 
-      await setDoc(addChatRef(chatId, user.id), {
-        userId: user.id!,
-        email: user.email!,
-        timestamp: serverTimestamp(),
-        chatId: chatId,
-        isAdmin: false,
-        image: user.image || "",
-      })
-        .then(() => {
-          setOpen(false);
+        UsersInChat.forEach((users) => {
+          if (user.id === users.userId) {
+            toast({
+              title: "User not found",
+              description: "Please enter a valid email address",
+              variant: "destructive",
+            });
+            userFound = true;
+            return;
+          }
+        });
 
+        if (userFound) {
           toast({
-            title: "User Added to chat",
-            description: "The user has been invited to the chat",
-            className: "bg-green-600 text-white",
-            duration: 3000,
-          });
-
-          setopenInviteLink(true);
-        })
-        .catch(() => {
-          toast({
-            title: "Error",
-            description: "Whoops... there was an error adding the user",
+            title: "User Already in chat",
+            description: "Please invite a new user",
             variant: "destructive",
           });
 
-          setOpen(false);
-        });
-    }
+          return;
+        }
 
-    form.reset();
+        await setDoc(addChatRef(chatId, user.id), {
+          userId: user.id!,
+          email: user.email!,
+          timestamp: serverTimestamp(),
+          chatId: chatId,
+          isAdmin: false,
+          image: user.image || "",
+        })
+          .then(() => {
+            setOpen(false);
+
+            toast({
+              title: "User Added to chat",
+              description: "The user has been invited to the chat",
+              className: "bg-green-600 text-white",
+              duration: 3000,
+            });
+
+            setopenInviteLink(true);
+          })
+          .catch(() => {
+            toast({
+              title: "Error",
+              description: "Whoops... there was an error adding the user",
+              variant: "destructive",
+            });
+
+            setOpen(false);
+          });
+      }
+
+      form.reset();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setloading(false);
+    }
   }
 
   return (
@@ -206,9 +215,15 @@ function InviteUser({ chatId }: { chatId: string }) {
                   )}
                 />
 
-                <Button className="ml-auto sm:w-fit w-full" type="submit">
-                  Add To Chat
-                </Button>
+                {loading ? (
+                  <div className="ml-auto sm:w-fit w-full">
+                    <LoadingSpinner />
+                  </div>
+                ) : (
+                  <Button className="ml-auto sm:w-fit w-full" type="submit">
+                    Add To Chat
+                  </Button>
+                )}
               </form>
             </Form>
           </DialogContent>
