@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import UserAvatar from "../UserAvatar";
 
 function Chatmemberbadge({ chatId }: { chatId: string }) {
+  
   const [members, loading, error] = useCollectionData<ChatMembers>(
     chatMembersRef(chatId)
   );

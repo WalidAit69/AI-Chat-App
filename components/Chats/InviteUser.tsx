@@ -64,13 +64,13 @@ function InviteUser({ chatId }: { chatId: string }) {
       description: "Please wait while we send the invite...",
     });
 
-    const noOfUsersInChat = (await getDocs(chatMembersRef(chatId))).docs.map(
-      (doc) => doc.data()
-    ).length;
+    const UsersInChat = (await getDocs(chatMembersRef(chatId))).docs.map((doc) => doc.data());
 
     const isPro = subscription?.status === "active";
 
-    if (!isPro && noOfUsersInChat >= 2) {
+    console.log(UsersInChat);
+
+    if (!isPro && UsersInChat.length >= 2) {
       toast({
         title: "You can't invite more than 2 users",
         description:
@@ -93,8 +93,7 @@ function InviteUser({ chatId }: { chatId: string }) {
 
     const user = querySnapshot?.docs[0]?.data();
 
-
-    if (querySnapshot.empty || user.id === session.user.id) {
+    if (querySnapshot.empty) {
       toast({
         title: "User not found",
         description: "Please enter a valid email address",
@@ -102,8 +101,15 @@ function InviteUser({ chatId }: { chatId: string }) {
       });
 
       return;
-    } else {
+    } else if (user.id === session.user.id) {
+      toast({
+        title: "User Already in chat",
+        description: "Please invite a new user",
+        variant: "destructive",
+      });
 
+      return;
+    } else {
       await setDoc(addChatRef(chatId, user.id), {
         userId: user.id!,
         email: user.email!,
@@ -111,26 +117,28 @@ function InviteUser({ chatId }: { chatId: string }) {
         chatId: chatId,
         isAdmin: false,
         image: user.image || "",
-      }).then(() =>{
-        setOpen(false);
+      })
+        .then(() => {
+          setOpen(false);
 
-        toast({
-          title: "User Added to chat",
-          description: "The user has been invited to the chat",
-          className:"bg-green-600 text-white",
-          duration:3000,
-        });
-
-        setopenInviteLink(true);
-      }).catch(() =>{
-        toast({
-            title: "Error",
-            description: "Whoops... there was an error adding the user",
-            variant:"destructive",
+          toast({
+            title: "User Added to chat",
+            description: "The user has been invited to the chat",
+            className: "bg-green-600 text-white",
+            duration: 3000,
           });
 
-        setOpen(false);
-      })
+          setopenInviteLink(true);
+        })
+        .catch(() => {
+          toast({
+            title: "Error",
+            description: "Whoops... there was an error adding the user",
+            variant: "destructive",
+          });
+
+          setOpen(false);
+        });
     }
 
     form.reset();
@@ -184,10 +192,10 @@ function InviteUser({ chatId }: { chatId: string }) {
           </DialogContent>
         </Dialog>
 
-        <ShareLink 
-        isOpen={openInviteLink}
-        setIsOpen={setopenInviteLink}
-        chatId={chatId}
+        <ShareLink
+          isOpen={openInviteLink}
+          setIsOpen={setopenInviteLink}
+          chatId={chatId}
         />
       </>
     )
