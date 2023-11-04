@@ -47,7 +47,7 @@ async function Header() {
         </div>
       </nav>
 
-      {/* <ProBanner/> */}
+      <ProBanner/>
     </header>
   );
 }
