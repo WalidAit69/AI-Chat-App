@@ -3,7 +3,8 @@ import { cn } from "@/lib/utils";
 function LoadingSpinner({dark}:{dark?:boolean}) {
 
   const combinedClasses = cn(
-    "w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-white fill-black",
+    "w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-black fill-black dark:fill-white",
+    dark && "dark:text-gray-200 dark:fill-black"
   );
 
   return (

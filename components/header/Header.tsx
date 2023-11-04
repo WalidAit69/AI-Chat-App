@@ -10,6 +10,7 @@ import CreateChatButton from "./CreateChatButton";
 import ProBanner from "./ProBanner";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth";
+import LanguageSelect from "./LanguageSelect";
 
 async function Header() {
 
@@ -24,7 +25,7 @@ async function Header() {
         <Logo />
 
         <div className="flex flex-1 items-center justify-end space-x-4">
-          {/* {LanguageSelect &&} */}
+          <LanguageSelect/>
 
           {session ? (
             <>
