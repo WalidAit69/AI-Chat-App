@@ -63,21 +63,12 @@ function PricingCards({ redirect }: { redirect: boolean }) {
 
             {redirect ? (
               <Link href={"/register"} className="mt-10">
-                {tier.id ? (
-                  <Button
-                    variant={"default"}
-                    className="w-full bg-black text-white"
-                  >
-                    Go Pro
-                  </Button>
-                ) : (
-                  <Button
-                    variant={"default"}
-                    className="w-full bg-black text-white"
-                  >
-                    Get Started Today
-                  </Button>
-                )}
+                <Button
+                  variant={"default"}
+                  className="w-full bg-black text-white"
+                >
+                  Get Started Today
+                </Button>
               </Link>
             ) : (
               tier.id && <CheckoutButton />
@@ -106,7 +97,7 @@ const tiers = [
   {
     name: "Pro",
     id: "pro",
-    priceMonthly: "19.99$",
+    priceMonthly: "$19.99",
     description: "Unlock the full Potential with Pro!",
     features: [
       "Unlimited Messages in Chats",

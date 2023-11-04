@@ -15,13 +15,12 @@ function ManageAccountButton() {
       if (response.ok) {
         const data = await response.text();
         window.location.href = data;
-        setloading(false);
       } else {
         console.error("Error:");
-        setloading(false);
       }
     } catch (error) {
       console.error("Error:", error);
+    } finally{
       setloading(false);
     }
   };
@@ -30,11 +29,12 @@ function ManageAccountButton() {
     <>
       {loading ? (
         <div className="flex justify-center">
-          <LoadingSpinner dark={false}/>
+          <LoadingSpinner dark={false} />
         </div>
       ) : (
         <Button
-          className="w-full dark:bg-black dark:text-white"
+          variant={"outline"}
+          className="w-full"
           onClick={handleManageBilling}
         >
           Manage Billing

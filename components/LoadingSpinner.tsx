@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-function LoadingSpinner({dark}:{dark:boolean}) {
+function LoadingSpinner({dark}:{dark?:boolean}) {
 
   const combinedClasses = cn(
     "w-6 h-6 mr-2 text-gray-200 animate-spin dark:text-white fill-black",
