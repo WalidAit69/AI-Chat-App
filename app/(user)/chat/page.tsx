@@ -2,7 +2,7 @@ import ChatList from "@/components/Chats/ChatList";
 
 function ChatsPage() {
   return (
-    <div>
+    <div className="">
       {/* {Chat permission} */}
 
       <ChatList />
