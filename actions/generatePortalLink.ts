@@ -3,9 +3,7 @@
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
 import Stripe from "stripe";
-import { headers } from "next/headers";
 import { adminDb } from "@/firebase-admin";
-import { redirect } from "next/navigation";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2023-10-16",

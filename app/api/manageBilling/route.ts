@@ -14,5 +14,8 @@ export async function GET(req: NextRequest, res: NextResponse) {
     }
   } catch (error) {
     console.error("Error generating Stripe Portal link:", error);
+    return new NextResponse("error", {
+      status: 404,
+    });
   }
 }
