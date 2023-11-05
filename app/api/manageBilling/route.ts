@@ -3,7 +3,7 @@ import { generatePortalLink } from '@/actions/generatePortalLink';
 import { NextResponse } from "next/server";
 
 
-export async function GET(res: Response) {
+export async function GET(req: Request) {
     try {
       const portalLink = await generatePortalLink();
       return new NextResponse(portalLink!);
