@@ -1,9 +1,21 @@
 import ChatList from "@/components/Chats/ChatList";
+import ChatPermissionError from "@/components/Chats/ChatPermissionError";
 
-function ChatsPage() {
+type ChatsPageProps = {
+  params: {};
+  searchParams: {
+    error: string;
+  };
+};
+
+function ChatsPage({ searchParams: { error } }: ChatsPageProps) {
   return (
     <div className="">
-      {/* {TODO : Chat permission} */}
+      {error && (
+        <div className="m-2">
+          <ChatPermissionError/>
+        </div>
+      )}
 
       <ChatList />
     </div>
