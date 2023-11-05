@@ -8,11 +8,12 @@ function ManageAccountButton() {
   const handleManageBilling = async () => {
     try {
       setloading(true);
-      const response = await fetch("/api/manageBilling", {
+
+      const response = await fetch("/api/managebilling", {
         method: "GET",
       });
 
-      if (response.ok) {
+      if (response) {
         const data = await response.text();
         window.location.href = data;
       } else {
@@ -29,7 +30,7 @@ function ManageAccountButton() {
     <>
       {loading ? (
         <div className="flex justify-center">
-          <LoadingSpinner dark={true} />
+          <LoadingSpinner dark={false} />
         </div>
       ) : (
         <Button

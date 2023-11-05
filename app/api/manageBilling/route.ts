@@ -1,12 +1,11 @@
 import { generatePortalLink } from "@/actions/generatePortalLink";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function GET(req: Request) {
   try {
-    
     const portalLink = await generatePortalLink();
     return new NextResponse(portalLink!);
-
+    
   } catch (error) {
     console.error("Error generating Stripe Portal link:", error);
     return new NextResponse("error", {
