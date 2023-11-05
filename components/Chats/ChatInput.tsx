@@ -58,13 +58,15 @@ function ChatInput({ chatId }: { chatId: string }) {
       toast({
         title: "Chat limit reached",
         description:
-          "You've 'exceeded the FREE plan limit of 20 messages per chat.Upgrade to PRO for unlimited chat messages!,",
+          "You've 'exceeded the FREE plan limit of 20 messages per chat.Upgrade to PRO for unlimited chat messages!",
         variant: "destructive",
         action: (
           <ToastAction
             altText="Upgrade"
             onClick={() => router.push("/register")}
-          ></ToastAction>
+          >
+            Upgrade to PRO
+          </ToastAction>
         ),
       });
 

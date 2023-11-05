@@ -87,6 +87,10 @@ function InviteUser({ chatId }: { chatId: string }) {
           </ToastAction>
         ),
       });
+      form.reset();
+      setloading(false);
+      setOpen(false);
+
 
       return;
     }
