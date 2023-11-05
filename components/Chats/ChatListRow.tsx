@@ -27,7 +27,7 @@ function ChatListRow({ chatId }: { chatId: string }) {
     <div
       key={chatId}
       onClick={() => router.push(`/chat/${chatId}`)}
-      className="flex p-5 items-center space-x-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-slate-700"
+      className="flex p-5 items-center space-x-2 cursor-pointer rounded-lg hover:bg-gray-100 dark:hover:bg-slate-700"
     >
       <UserAvatar
         name={message?.user.name || session?.user.name || null}
