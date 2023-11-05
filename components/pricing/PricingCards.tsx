@@ -65,7 +65,7 @@ function PricingCards({ redirect }: { redirect: boolean }) {
               <Link href={"/register"} className="mt-10">
                 <Button
                   variant={"default"}
-                  className="w-full bg-black text-white"
+                  className="w-full"
                 >
                   Get Started Today
                 </Button>

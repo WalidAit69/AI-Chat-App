@@ -3,7 +3,7 @@ import ChatList from "@/components/Chats/ChatList";
 function ChatsPage() {
   return (
     <div className="">
-      {/* {Chat permission} */}
+      {/* {TODO : Chat permission} */}
 
       <ChatList />
     </div>

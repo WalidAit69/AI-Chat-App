@@ -29,7 +29,7 @@ function ManageAccountButton() {
     <>
       {loading ? (
         <div className="flex justify-center">
-          <LoadingSpinner dark={false} />
+          <LoadingSpinner dark={true} />
         </div>
       ) : (
         <Button

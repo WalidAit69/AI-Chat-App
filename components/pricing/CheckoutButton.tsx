@@ -8,6 +8,7 @@ import { db } from "@/firebase";
 import LoadingSpinner from "../LoadingSpinner";
 import { useSubscriptionStore } from "@/store/store";
 import ManageAccountButton from "./ManageAccountButton";
+import { useToast } from "../ui/use-toast";
 
 function CheckoutButton() {
   const { data: session } = useSession();
@@ -16,6 +17,8 @@ function CheckoutButton() {
   const subscription = useSubscriptionStore((state) => state.subscription);
   const isLoadingSubscription = subscription === undefined;
   const isSubscribed = subscription?.status === "active";
+
+  const {toast} = useToast();
 
   const createCheckoutSession = async () => {
     if (!session?.user.id) return;
@@ -39,8 +42,13 @@ function CheckoutButton() {
       const error = data?.error;
 
       if (error) {
-        alert(`An error occured ${error.message}`);
+        toast({
+          title: "Error",
+          description: error.message,
+          variant:"destructive"
+        });
         setloading(false);
+
       }
 
       if (url) {
@@ -56,6 +64,16 @@ function CheckoutButton() {
     // {"if subscribed ... else ..."}
 
     <div className="mt-10 flex flex-col space-y-2">
+
+      {isSubscribed && (
+        <>
+        <hr className="mt-5"/>
+        <p className="pt-5 text-center text-xs text-indigo-600">
+          You are subscribed to PRO
+        </p>
+        </>
+      )}
+
       <div>
         {isSubscribed ? (
           <ManageAccountButton />

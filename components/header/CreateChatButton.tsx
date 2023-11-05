@@ -7,9 +7,13 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useToast } from "../ui/use-toast";
 import { useSubscriptionStore } from "@/store/store";
-import { serverTimestamp, setDoc } from "firebase/firestore";
-import { addChatRef } from "@/lib/converters/ChatMembers";
+import { getDocs, serverTimestamp, setDoc } from "firebase/firestore";
+import {
+  addChatRef,
+  chatMembersCollectionGroupRef,
+} from "@/lib/converters/ChatMembers";
 import LoadingSpinner from "../LoadingSpinner";
+import { ToastAction } from "../ui/toast";
 const { v4: uuidv4 } = require("uuid");
 
 function CreateChatButton({ isLarge }: { isLarge?: boolean }) {
@@ -29,7 +33,30 @@ function CreateChatButton({ isLarge }: { isLarge?: boolean }) {
       duration: 3000,
     });
 
-    // TODO:check subscription and add limits
+    const noOfChats = (
+      await getDocs(chatMembersCollectionGroupRef(session.user.id))
+    ).docs.map((doc) => doc.data()).length;
+
+    const isPro = subscription?.status === "active";
+
+    if (!isPro && noOfChats >= 3) {
+      setloading(false);
+      toast({
+        title: "You have reached the limit of 3 chats",
+        description: "Please upgrade your subscription",
+        variant: "destructive",
+        action: (
+          <ToastAction
+            altText="Upgrade"
+            onClick={() => router.push("/register")}
+          >
+            Upgrade to PRO
+          </ToastAction>
+        ),
+      });
+      
+      return;
+    }
 
     const chatId = uuidv4();
 
@@ -40,30 +67,32 @@ function CreateChatButton({ isLarge }: { isLarge?: boolean }) {
       isAdmin: true,
       chatId: chatId,
       image: session.user.image || "",
-    }).then(() => {
-      toast({
-        title: "success",
-        description: "Your chat has been created!",
-        duration: 2000,
-        className:"bg-green-600 text-white"
-      });
-      router.push(`/chat/${chatId}`);
-    }).catch((error) =>{
-      console.error(error);
-      toast({
-        title: "Error",
-        description: "There was an error creating your chat!",
-        variant:"destructive"
-      });
-    }).finally(() =>{
-      setloading(false);
     })
-
+      .then(() => {
+        toast({
+          title: "success",
+          description: "Your chat has been created!",
+          duration: 2000,
+          className: "bg-green-600 text-white",
+        });
+        router.push(`/chat/${chatId}`);
+      })
+      .catch((error) => {
+        console.error(error);
+        toast({
+          title: "Error",
+          description: "There was an error creating your chat!",
+          variant: "destructive",
+        });
+      })
+      .finally(() => {
+        setloading(false);
+      });
   };
 
   return (
     <Button variant={"ghost"} onClick={createNewChat}>
-      {loading ? <LoadingSpinner/> :<MessageSquarePlus />}
+      {loading ? <LoadingSpinner /> : <MessageSquarePlus />}
     </Button>
   );
 }
