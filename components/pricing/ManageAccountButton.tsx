@@ -8,12 +8,12 @@ function ManageAccountButton() {
   const handleManageBilling = async () => {
     try {
       setloading(true);
-
-      const response = await fetch("/api/managebilling", {
+      
+      const response = await fetch("/api/billing/managebilling", {
         method: "GET",
       });
 
-      if (response) {
+      if (response.ok) {
         const data = await response.text();
         window.location.href = data;
       } else {
