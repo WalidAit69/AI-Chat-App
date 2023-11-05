@@ -215,15 +215,9 @@ function InviteUser({ chatId }: { chatId: string }) {
                   )}
                 />
 
-                {loading ? (
-                  <div className="ml-auto sm:w-fit w-full">
-                    <LoadingSpinner />
-                  </div>
-                ) : (
-                  <Button className="ml-auto sm:w-fit w-full" type="submit">
-                    Add To Chat
-                  </Button>
-                )}
+                <Button className="ml-auto sm:w-36 w-full" type="submit" disabled={loading}>
+                  {loading ? <LoadingSpinner dark /> : "Add To Chat"}
+                </Button>
               </form>
             </Form>
           </DialogContent>

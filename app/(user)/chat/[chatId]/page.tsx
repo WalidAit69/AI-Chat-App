@@ -21,7 +21,7 @@ async function ChatPage({params : {chatId}} : Props) {
     (doc) => doc.data()
   )
   return (
-    <div className=''>
+    <div className='flex flex-col justify-between h-full'>
         <AdminControls chatId={chatId}/>
 
         <Chatmemberbadge chatId={chatId}/>
