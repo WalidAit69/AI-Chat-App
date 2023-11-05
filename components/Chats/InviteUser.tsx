@@ -180,7 +180,7 @@ function InviteUser({ chatId }: { chatId: string }) {
       <>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button className="w-[70%] sm:w-auto">
               <PlusCircleIcon className="mr-1 capitalize" />
               Invite your friends
             </Button>

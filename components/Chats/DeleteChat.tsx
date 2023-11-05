@@ -76,7 +76,9 @@ function DeleteChat({ chatId }: { chatId: string }) {
       <>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button variant={"destructive"}>Delete Chat</Button>
+            <Button variant={"destructive"} className="w-[70%] sm:w-auto">
+              Delete Chat
+            </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>

@@ -54,7 +54,7 @@ function ShareLink({ isOpen, setIsOpen, chatId }: ShareLinkProps) {
         defaultOpen={isOpen}
       >
         <DialogTrigger asChild>
-          <Button variant={"outline"}>
+          <Button variant={"outline"} className="w-[70%] sm:w-auto">
             <Copy className="mr-2" />
             Share Link
           </Button>
