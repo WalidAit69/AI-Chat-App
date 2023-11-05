@@ -8,9 +8,12 @@ function ManageAccountButton() {
   const handleManageBilling = async () => {
     try {
       setloading(true);
-      
+
       const response = await fetch("/api/billing/managebilling", {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (response.ok) {
@@ -21,7 +24,7 @@ function ManageAccountButton() {
       }
     } catch (error) {
       console.error("Error:", error);
-    } finally{
+    } finally {
       setloading(false);
     }
   };
