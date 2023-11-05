@@ -11,7 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 
 export async function generatePortalLink() {
   const session = await getServerSession(authOptions);
-  const host = "ai-chat-app-six.vercel.app";
+  const host = "https://ai-chat-app-six.vercel.app/register";
 
   if (!session?.user.id) return console.error("No User Id Found");
 
@@ -19,10 +19,7 @@ export async function generatePortalLink() {
     user: { id },
   } = session;
 
-  const returnUrl =
-    process.env.NODE_ENV === "development"
-      ? `http://${host}/register`
-      : `https://${host}/register`;
+  const returnUrl = host;
 
   const doc = await adminDb.collection("customers").doc(id).get();
 
