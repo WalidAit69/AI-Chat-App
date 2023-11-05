@@ -57,11 +57,9 @@ function CheckoutButton() {
       }
     });
 
-    // redirect user to checkout page
   };
 
   return (
-    // {"if subscribed ... else ..."}
 
     <div className="mt-10 flex flex-col space-y-2">
 

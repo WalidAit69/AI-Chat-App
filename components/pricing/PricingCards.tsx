@@ -7,7 +7,6 @@ import { Button } from "../ui/button";
 import { useSession } from "next-auth/react";
 
 function PricingCards({ redirect }: { redirect: boolean }) {
-  const { data: session } = useSession();
 
   return (
     <div>

@@ -1,13 +1,18 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { generatePortalLink } from '@/actions/generatePortalLink';
-import { NextResponse } from "next/server";
+import { generatePortalLink } from "@/actions/generatePortalLink";
+import { NextRequest, NextResponse } from "next/server";
 
+export async function GET(req: NextRequest, res: NextResponse) {
+  try {
+    const portalLink = await generatePortalLink();
 
-export async function GET(req: Request) {
-    try {
-      const portalLink = await generatePortalLink();
+    if (portalLink) {
       return new NextResponse(portalLink!);
-    } catch (error) {
-      console.error('Error generating Stripe Portal link:', error);
+    } else {
+      return new NextResponse(null, {
+        status: 404,
+      });
     }
+  } catch (error) {
+    console.error("Error generating Stripe Portal link:", error);
+  }
 }
